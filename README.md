@@ -14,3 +14,25 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+
+## How to Use
+
+- **Search Pokémon**: Use the search bar at the top of the screen to search for Pokémon by name.
+- **View Pokémon Details**: Tap on any Pokémon from the list to view detailed information about it, such as its type, abilities, height, and weight.
+- **Add to Favorites**: Tap the heart icon to mark a Pokémon as a favorite.
+- **Clear Search**: Tap the clear button to reset the search.
+
+## Technologies Used
+
+- **Flutter**: Framework used for building the app.
+- **Pokémon API**: Used to fetch data about Pokémon.
+- **Provider**: For state management.
+- **Material Design**: For building a responsive and user-friendly UI.
+
+## Assets
+
+This project uses the following assets:
+
+1. **Pokémon Images**: High-quality images of Pokémon retrieved from the Pokémon API.
+2. **Icons**: Custom heart icons used for marking favorites, sourced from Material Design Icons.

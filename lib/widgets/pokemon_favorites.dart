@@ -3,6 +3,8 @@ import 'package:pokedexapp/models/pokemon_model.dart';
 import 'package:pokedexapp/providers/favorites_provider.dart';
 import 'package:provider/provider.dart';
 
+//Widget to turn on or turn of favorites
+//It is displayed in Favorites,Details, and Home Screen
 class FavoriteIcon extends StatefulWidget {
   final Pokemon pokemon;
 

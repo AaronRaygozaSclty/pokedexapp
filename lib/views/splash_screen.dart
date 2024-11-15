@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pokedexapp/config/config.dart';
 import 'home_screen.dart';
 
+
+//This is the frist screen of the application
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 

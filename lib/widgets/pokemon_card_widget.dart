@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokedexapp/models/pokemon_model.dart';
 import 'package:pokedexapp/views/details_screen.dart';
-import 'package:pokedexapp/widgets/pokemon_favorites.dart'; // Importa el widget aquí
+import 'package:pokedexapp/widgets/pokemon_favorites.dart';
 
 class PokemonCard extends StatelessWidget {
   final Pokemon pokemon;
@@ -52,7 +52,7 @@ class PokemonCard extends StatelessWidget {
               right: -8,
               child: FavoriteIcon(
                 pokemon: pokemon,
-              ), // Usa el widget aquí
+              ), // FavoriteIcon Widget
             ),
           ],
         ),

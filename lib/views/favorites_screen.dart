@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pokedexapp/providers/favorites_provider.dart';
 import 'package:pokedexapp/widgets/pokemon_card_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:pokedexapp/config/config.dart';
 
+//This Widget  Groups POkemons in Favorites
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});
 
@@ -11,37 +13,39 @@ class FavoritesScreen extends StatelessWidget {
     final favoritesProvider = Provider.of<FavoritesProvider>(context);
     final favoritePokemonList = favoritesProvider.favorites;
 
-    // Si no hay Pokémon favoritos, muestra un mensaje
-    if (favoritePokemonList.isEmpty) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('Favoritos'),
-        ),
-        body: const Center(
-          child: Text("No tienes Pokémon favoritos"),
-        ),
-      );
-    }
-
-    // Si hay Pokémon favoritos, muestra la lista en un GridView
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Favoritos'),
-      ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(8),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-          childAspectRatio: 0.8,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        itemCount: favoritePokemonList.length,
-        itemBuilder: (context, index) {
-          final pokemon = favoritePokemonList[index];
-          return PokemonCard(pokemon: pokemon);
-        },
+        backgroundColor: AppColors.primaryColor,
+        title: const Text(
+          'Favorites',
+          style: TextStyle(
+              color: AppColors.whiteText, fontWeight: FontWeight.bold),
+        ),
       ),
+      body: favoritePokemonList.isEmpty
+          ? const Center(
+              child: Text("You don't have any favorite Pokémon"),
+            )
+          : GridView.builder(
+              padding: const EdgeInsets.all(8),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+                childAspectRatio: 0.8,
+              ),
+              itemCount: favoritePokemonList.length,
+              itemBuilder: (context, index) {
+                final pokemon = favoritePokemonList[index];
+                return PokemonCard(pokemon: pokemon);//POkemon Card Widget
+              },
+            ),
     );
   }
 }
