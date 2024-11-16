@@ -15,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _isSearching = false; 
+  bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
   List<Pokemon> _pokemonList = [];
   List<Pokemon> _filteredPokemonList = [];
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _filterPokemonList(String query) {
     final filteredList = _pokemonList
         .where((pokemon) =>
-            pokemon.name.toUpperCase().contains(query.toLowerCase()))
+            pokemon.name.contains(query))
         .toList();
     setState(() {
       _filteredPokemonList = filteredList;
@@ -98,7 +98,15 @@ class _HomeScreenState extends State<HomeScreen> {
             Icons.search,
             color: Colors.white,
           ),
-          onPressed: _toggleSearch,
+          onPressed: () {
+            setState(
+              () {
+                _isSearching = !_isSearching;
+                if (!_isSearching) _searchController.clear();
+                _filteredPokemonList = _pokemonList;
+              },
+            );
+          },
         ),
         backgroundColor: AppColors.primaryColor,
         title: const Text(
