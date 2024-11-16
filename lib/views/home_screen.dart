@@ -69,10 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // To filter Pokemon List
   void _filterPokemonList(String query) {
-    final filteredList = _pokemonList
-        .where((pokemon) =>
-            pokemon.name.contains(query))
-        .toList();
+    final filteredList =
+        _pokemonList.where((pokemon) => pokemon.name.contains(query)).toList();
     setState(() {
       _filteredPokemonList = filteredList;
     });
@@ -141,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 controller: _searchController,
                 autofocus: true,
                 decoration: const InputDecoration(
-                  hintText: 'Buscar...',
+                  hintText: 'Buscar..',
                   border: OutlineInputBorder(),
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 10, horizontal: 10),
