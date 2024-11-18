@@ -28,6 +28,7 @@ class AppColors {
   };
 
 // Function to get the type's color
+
   static Color getTypeColor(String type) {
     return typeColors[type.toLowerCase()] ?? Colors.grey;
   }

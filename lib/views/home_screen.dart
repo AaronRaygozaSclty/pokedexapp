@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:pokedexapp/config/config.dart';
+import 'package:pokedexapp/config/logs.dart';
 import 'package:pokedexapp/providers/favorites_provider.dart';
 import 'package:pokedexapp/services/services.dart';
 import 'package:pokedexapp/views/favorites_screen.dart';
@@ -47,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
         await _loadPokemonFromApi();
       }
     } catch (e) {
-      Text('Error al cargar Pokémon: $e');
+      Logs.p.e('Error loading Pokemon: $e');
     }
   }
 
@@ -71,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     } catch (e) {
-      Text('Error al cargar los Pokémon favoritos: $e');
+      Logs.p.e('Error loading pokemon favorites$e');
     }
   }
 
@@ -175,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 controller: _searchController,
                 autofocus: true,
                 decoration: const InputDecoration(
-                  hintText: 'Buscar..',
+                  hintText: 'Search..',
                   border: OutlineInputBorder(),
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 10, horizontal: 10),

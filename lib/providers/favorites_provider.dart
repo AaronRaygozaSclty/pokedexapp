@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:pokedexapp/config/logs.dart';
 import 'package:pokedexapp/models/pokemon_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,7 +24,7 @@ class FavoritesProvider extends ChangeNotifier {
       }
     } catch (e) {
       // Log error if the favorites fail to load
-      Text('Error loading favorite Pokémon: $e');
+      Logs.p.e('Error loading favorite Pokémon: $e');
     }
   }
 
