@@ -20,8 +20,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
-  final FocusNode _searchFocusNode =
-      FocusNode(); // Agregado para gestionar el foco
+  final FocusNode _searchFocusNode = FocusNode();
   List<Pokemon> _pokemonList = [];
   List<Pokemon> _filteredPokemonList = [];
 
@@ -34,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    _searchFocusNode.dispose(); 
+    _searchFocusNode.dispose();
     _searchController.dispose();
     super.dispose();
   }
@@ -137,11 +136,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 Future.delayed(
                   const Duration(milliseconds: 100),
                 );
-                _searchFocusNode.requestFocus(); 
+                _searchFocusNode.requestFocus();
               } else {
                 _searchController.clear();
-                _searchFocusNode
-                    .unfocus(); 
+                _searchFocusNode.unfocus();
                 _filteredPokemonList = _pokemonList;
               }
             });
@@ -169,13 +167,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ).then((_) {
                 if (!mounted) return;
-                final favoritesProvider =
-                    Provider.of<FavoritesProvider>(context, listen: false);
-
                 setState(() {
-                  for (var pokemon in _pokemonList) {
-                    pokemon.isFavorite = favoritesProvider.isFavorite(pokemon);
-                  }
+                  _isSearching = false;
+                  _searchController.clear();
+                  _searchFocusNode.unfocus();
                   _filteredPokemonList = _pokemonList;
                 });
               });
@@ -190,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: _searchController,
-                focusNode: _searchFocusNode, 
+                focusNode: _searchFocusNode,
                 autofocus: true,
                 decoration: const InputDecoration(
                   hintText: 'Search...',
