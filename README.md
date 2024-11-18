@@ -48,6 +48,7 @@ This project uses the following assets:
   <img src="assets/Screen2.png" width="220" />
   <img src="assets/Screen3.png" width="220" />
   <img src="assets/Screen4.png" width="220" />
+  <img src="assets/Screen5.png" width="220" />
 </div>
 
 ## How to Run
