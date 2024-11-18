@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pokedexapp/config/config.dart';
 import 'home_screen.dart';
 
-// SplashScreen serves as the entry point to the application, displaying the initial view while data is being loaded.
+// SplashScreen serves as the entry point to the application,
+// displaying the initial view while data is being loaded.
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

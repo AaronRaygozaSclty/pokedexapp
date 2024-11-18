@@ -20,6 +20,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode =
+      FocusNode(); // Agregado para gestionar el foco
   List<Pokemon> _pokemonList = [];
   List<Pokemon> _filteredPokemonList = [];
 
@@ -28,6 +30,13 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _fetchPokemonList();
     _fetchFavoritePokemonList();
+  }
+
+  @override
+  void dispose() {
+    _searchFocusNode.dispose(); 
+    _searchController.dispose();
+    super.dispose();
   }
 
   Future<void> _fetchPokemonList() async {
@@ -81,7 +90,6 @@ class _HomeScreenState extends State<HomeScreen> {
         Provider.of<FavoritesProvider>(context, listen: false);
 
     setState(() {
-      // loop to update the favorites from SharedPreferences
       for (var pokemon in _pokemonList) {
         pokemon.isFavorite = favoritesProvider.isFavorite(pokemon);
       }
@@ -125,8 +133,17 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             setState(() {
               _isSearching = !_isSearching;
-              if (!_isSearching) _searchController.clear();
-              _filteredPokemonList = _pokemonList;
+              if (_isSearching) {
+                Future.delayed(
+                  const Duration(milliseconds: 100),
+                );
+                _searchFocusNode.requestFocus(); 
+              } else {
+                _searchController.clear();
+                _searchFocusNode
+                    .unfocus(); 
+                _filteredPokemonList = _pokemonList;
+              }
             });
           },
         ),
@@ -156,7 +173,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     Provider.of<FavoritesProvider>(context, listen: false);
 
                 setState(() {
-                  // loop to update the Pokémon list
                   for (var pokemon in _pokemonList) {
                     pokemon.isFavorite = favoritesProvider.isFavorite(pokemon);
                   }
@@ -174,9 +190,10 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: _searchController,
+                focusNode: _searchFocusNode, 
                 autofocus: true,
                 decoration: const InputDecoration(
-                  hintText: 'Search..',
+                  hintText: 'Search...',
                   border: OutlineInputBorder(),
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 10, horizontal: 10),
