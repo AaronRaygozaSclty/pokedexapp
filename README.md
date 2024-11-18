@@ -15,7 +15,6 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-
 ## How to Use
 
 - **Search Pokémon**: Use the search bar at the top of the screen to search for Pokémon by name.
@@ -36,3 +35,18 @@ This project uses the following assets:
 
 1. **Pokémon Images**: High-quality images of Pokémon retrieved from the Pokémon API.
 2. **Icons**: Custom heart icons used for marking favorites, sourced from Material Design Icons.
+3. **App Screenshots**: Screenshots of the app interface, showcasing different screens of the app.
+
+### Included Assets:
+
+- **Pokeball Image**: `assets/pokeball.png`
+- **Screen 1**: ![Screen 1](assets/Screen1.png)
+- **Screen 2**: ![Screen 2](assets/Screen2.png)
+- **Screen 3**: ![Screen 3](assets/Screen3.png)
+- **Screen 4**: ![Screen 4](assets/Screen4.png)
+
+## How to Run
+
+1. Clone the repository.
+2. Install the dependencies by running `flutter pub get` in the terminal.
+3. Run the app on an emulator or a physical device using `flutter run`.
