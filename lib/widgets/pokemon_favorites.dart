@@ -3,9 +3,12 @@ import 'package:pokedexapp/models/pokemon_model.dart';
 import 'package:pokedexapp/providers/favorites_provider.dart';
 import 'package:provider/provider.dart';
 
-//Widget to turn on or turn of favorites
-//It is displayed in Favorites,Details, and Home Screen
-class FavoriteIcon extends StatefulWidget {
+
+// This icon allows the user to toggle a Pokémon's favorite status.
+// When pressed, it updates the favorite status and changes the icon accordingly:
+// A filled star indicates the Pokémon is a favorite, while an outlined star indicates it is not.
+
+class FavoriteIcon extends StatelessWidget {
   final Pokemon pokemon;
 
   const FavoriteIcon({
@@ -14,27 +17,19 @@ class FavoriteIcon extends StatefulWidget {
   });
 
   @override
-  State<FavoriteIcon> createState() => _FavoriteIconState();
-}
-
-class _FavoriteIconState extends State<FavoriteIcon> {
-  @override
   Widget build(BuildContext context) {
     final favoritesProvider = Provider.of<FavoritesProvider>(context);
 
     return IconButton(
       icon: Icon(
-        widget.pokemon.isFavorite ? Icons.star : Icons.star_border,
-        color: widget.pokemon.isFavorite
+        pokemon.isFavorite ? Icons.star : Icons.star_border,
+        color: pokemon.isFavorite
             ? const Color.fromARGB(255, 200, 187, 66)
             : const Color.fromARGB(255, 21, 15, 15),
         size: 24,
       ),
       onPressed: () {
-        setState(() {
-          favoritesProvider.toggleFavorite(widget.pokemon);
-          widget.pokemon.isFavorite = !widget.pokemon.isFavorite;
-        });
+        favoritesProvider.toggleFavorite(pokemon);
       },
     );
   }

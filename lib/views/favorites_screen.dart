@@ -4,9 +4,27 @@ import 'package:pokedexapp/widgets/pokemon_card_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:pokedexapp/config/config.dart';
 
-//This Widget  Groups POkemons in Favorites
-class FavoritesScreen extends StatelessWidget {
+//This Widget Groups Pokemons in Favorites
+class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
+
+  @override
+  FavoritesScreenState createState() => FavoritesScreenState();
+}
+
+class FavoritesScreenState extends State<FavoritesScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFavorites(); 
+  }
+
+  Future<void> _loadFavorites() async {
+    final favoritesProvider =
+        Provider.of<FavoritesProvider>(context, listen: false);
+    await favoritesProvider.loadFavoritesFromPrefs(); // 🐻
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +47,7 @@ class FavoritesScreen extends StatelessWidget {
         ),
       ),
       body: favoritePokemonList.isEmpty
-          ? const Center(
-              child: Text("You don't have any favorite Pokémon"),
-            )
+          ? const Center(child: Text("You don't have any favorite Pokémon"))
           : GridView.builder(
               padding: const EdgeInsets.all(8),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -43,7 +59,7 @@ class FavoritesScreen extends StatelessWidget {
               itemCount: favoritePokemonList.length,
               itemBuilder: (context, index) {
                 final pokemon = favoritePokemonList[index];
-                return PokemonCard(pokemon: pokemon);//POkemon Card Widget
+                return PokemonCard(pokemon: pokemon); // Pokémon Card Widget
               },
             ),
     );

@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:pokedexapp/models/pokemon_model.dart';
 
 class PokemonService {
-  // Método para obtener la lista de Pokémon
+  // Method to fetch the Pokémon list
   static Future<List<Pokemon>> fetchPokemonList() async {
     final response = await http
         .get(Uri.parse('https://pokeapi.co/api/v2/pokemon?limit=151'));
@@ -16,7 +16,7 @@ class PokemonService {
     }
   }
 
-  // Método para obtener detalles de un Pokémon por su URL
+  // Method to fetch details of a Pokémon by its URL
   static Future<Pokemon> fetchPokemonDetails(String url) async {
     final response = await http.get(Uri.parse(url));
 

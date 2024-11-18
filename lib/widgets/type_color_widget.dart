@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:pokedexapp/config/config.dart'; 
+import 'package:pokedexapp/config/config.dart';
+
+// This widget displays a Pokémon type with its corresponding color.
+// If the type is empty, it shows 'Tipo desconocido' (Unknown Type).
+// The color for each type is retrieved from the AppColors class.
 class TypeWidget extends StatelessWidget {
-  final String type; 
+  final String type;
   const TypeWidget({super.key, required this.type});
 
   @override
   Widget build(BuildContext context) {
     if (type.isEmpty) {
-      return const Text('Tipo desconocido');
+      return const Text('Type Unknown');
     }
 
-    // Obtener el color correspondiente al tipo
-    Color typeColor = AppColors.getTypeColor(type); 
+    // Get the corresponding color for the type
+    Color typeColor = AppColors.getTypeColor(type);
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
