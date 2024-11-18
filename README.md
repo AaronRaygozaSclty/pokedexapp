@@ -40,10 +40,15 @@ This project uses the following assets:
 ### Included Assets:
 
 - **Pokeball Image**: `assets/pokeball.png`
-- **Screen 1**: <img src="assets/Screen1.png" width="300"/>
-- **Screen 2**: <img src="assets/Screen2.png" width="300"/>
-- **Screen 3**: <img src="assets/Screen3.png" width="300"/>
-- **Screen 4**: <img src="assets/Screen4.png" width="300"/>
+
+#### App Screens:
+
+<div style="display: flex; justify-content: space-between;">
+  <img src="assets/Screen1.png" width="220" />
+  <img src="assets/Screen2.png" width="220" />
+  <img src="assets/Screen3.png" width="220" />
+  <img src="assets/Screen4.png" width="220" />
+</div>
 
 ## How to Run
 
