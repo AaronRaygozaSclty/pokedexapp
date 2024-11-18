@@ -40,10 +40,10 @@ This project uses the following assets:
 ### Included Assets:
 
 - **Pokeball Image**: `assets/pokeball.png`
-- **Screen 1**: ![Screen 1](assets/Screen1.png)
-- **Screen 2**: ![Screen 2](assets/Screen2.png)
-- **Screen 3**: ![Screen 3](assets/Screen3.png)
-- **Screen 4**: ![Screen 4](assets/Screen4.png)
+- **Screen 1**: <img src="assets/Screen1.png" width="300"/>
+- **Screen 2**: <img src="assets/Screen2.png" width="300"/>
+- **Screen 3**: <img src="assets/Screen3.png" width="300"/>
+- **Screen 4**: <img src="assets/Screen4.png" width="300"/>
 
 ## How to Run
 
