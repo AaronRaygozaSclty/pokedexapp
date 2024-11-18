@@ -46,7 +46,6 @@ This project uses the following assets:
 <div style="display: flex; justify-content: space-between;">
   <img src="assets/Screen1.png" width="220" />
   <img src="assets/Screen2.png" width="220" />
-  <img src="assets/Screen3.png" width="220" />
   <img src="assets/Screen4.png" width="220" />
   <img src="assets/Screen5.png" width="220" />
 </div>
