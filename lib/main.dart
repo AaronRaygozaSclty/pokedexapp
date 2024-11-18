@@ -4,6 +4,7 @@ import 'package:pokedexapp/providers/favorites_provider.dart';
 import 'package:pokedexapp/views/splash_screen.dart';
 import 'package:provider/provider.dart';
 
+//
 void main() {
   runApp(
     ChangeNotifierProvider(

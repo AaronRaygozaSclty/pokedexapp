@@ -7,7 +7,7 @@ class FavoritesProvider extends ChangeNotifier {
   List<Pokemon> _favorites = [];
   List<Pokemon> get favorites => _favorites;
 
-  // Método para cargar los favoritos desde SharedPreferences
+  // Loads the favorite Pokémon list from SharedPreferences
   Future<void> loadFavoritesFromPrefs() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -19,14 +19,15 @@ class FavoritesProvider extends ChangeNotifier {
         _favorites = favoritePokemonListJson
             .map((item) => Pokemon.fromJson(item))
             .toList();
-        notifyListeners(); // Notificamos a los listeners para que se actualice la UI
+        notifyListeners(); // Notify listeners to update the UI
       }
     } catch (e) {
-      Text('Error al cargar los Pokémon favoritos: $e');
+      // Log error if the favorites fail to load
+      Text('Error loading favorite Pokémon: $e');
     }
   }
 
-  // Método para guardar los favoritos en SharedPreferences
+  // Saves the favorite Pokémon list to SharedPreferences
   Future<void> _saveFavoritesToPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     final favoriteListJson =
@@ -34,31 +35,31 @@ class FavoritesProvider extends ChangeNotifier {
     await prefs.setString('favoritePokemonList', favoriteListJson);
   }
 
-  // Método para alternar el estado de favorito de un Pokémon
+  // Toggles the favorite state of a Pokémon
   void toggleFavorite(Pokemon pokemon) {
-    // Verifica si el Pokémon ya está en los favoritos
+    // Checks if the Pokémon is already in the favorites list
     if (isFavorite(pokemon)) {
-      // Si está en los favoritos, lo eliminamos
+      // If it is, remove it from the list
       _favorites.removeWhere((favPokemon) => favPokemon.id == pokemon.id);
-      pokemon.isFavorite = false; // Actualiza el estado en el objeto Pokemon
+      pokemon.isFavorite = false; // Update the Pokémon's favorite state
     } else {
-      // Si no está en los favoritos, lo agregamos
+      // If it's not in the list, add it
       _favorites.add(pokemon);
-      pokemon.isFavorite = true; // Actualiza el estado en el objeto Pokemon
+      pokemon.isFavorite = true; // Update the Pokémon's favorite state
     }
-    notifyListeners(); // Notifica a los listeners que el estado cambió
-    _saveFavoritesToPrefs(); // Guarda los cambios en SharedPreferences
+    notifyListeners(); // Notify listeners of the state change
+    _saveFavoritesToPrefs(); // Save the updated list to SharedPreferences
   }
 
-  // Verifica si un Pokémon está en los favoritos
+  // Checks if a Pokémon is in the favorites list
   bool isFavorite(Pokemon pokemon) {
-    // Verifica si el Pokémon está en la lista de favoritos
+    // Returns true if the Pokémon is in the list of favorites
     return _favorites.any((favPokemon) => favPokemon.id == pokemon.id);
   }
 
-  // Actualiza la lista de favoritos
+  // Updates the favorites list with a new list
   void updateFavorites(List<Pokemon> newFavorites) {
     _favorites = newFavorites;
-    notifyListeners(); // Notifica a los listeners (pantallas que usan este provider)
+    notifyListeners(); // Notify listeners (screens using this provider)
   }
 }
