@@ -1,9 +1,13 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:pokedexapp/config/config.dart';
-import 'package:pokedexapp/models/pokemon_model.dart';
+import 'package:pokedexapp/providers/favorites_provider.dart';
 import 'package:pokedexapp/services/services.dart';
 import 'package:pokedexapp/views/favorites_screen.dart';
 import 'package:pokedexapp/widgets/pokemon_card_widget.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
+import 'package:pokedexapp/models/pokemon_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,54 +19,103 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
-  List<Pokemon> _pokemonList = []; // Lista completa de Pokémon
-  List<Pokemon> _filteredPokemonList = []; // Lista filtrada de Pokémon
+  List<Pokemon> _pokemonList = [];
+  List<Pokemon> _filteredPokemonList = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchPokemonList(); // Llama a la función para cargar la lista al iniciar
+    _fetchPokemonList();
+    _fetchFavoritePokemonList();
   }
 
-  // Método para cargar la lista de Pokémon
   Future<void> _fetchPokemonList() async {
     try {
-      final List<Pokemon> pokemonList = await PokemonService.fetchPokemonList();
-      setState(() {
-        _pokemonList = pokemonList;
-        _filteredPokemonList =
-            pokemonList; // Inicialmente muestra toda la lista
-      });
+      final prefs = await SharedPreferences.getInstance();
+      final pokemonListString = prefs.getString('pokemonList');
+
+      if (pokemonListString != null) {
+        final List<dynamic> pokemonListJson = jsonDecode(pokemonListString);
+        final pokemonList =
+            pokemonListJson.map((item) => Pokemon.fromJson(item)).toList();
+        setState(() {
+          _pokemonList = pokemonList;
+          _filteredPokemonList = pokemonList;
+        });
+        _updateFavoritesList();
+      } else {
+        await _loadPokemonFromApi();
+      }
     } catch (e) {
-      // Manejo de errores al cargar la lista
       Text('Error al cargar Pokémon: $e');
     }
   }
 
-  // Método para filtrar la lista de Pokémon
+  Future<void> _fetchFavoritePokemonList() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final favoritePokemonListString = prefs.getString('favoritePokemonList');
+
+      if (favoritePokemonListString != null) {
+        final List<dynamic> favoritePokemonListJson =
+            jsonDecode(favoritePokemonListString);
+        final favoritePokemonList = favoritePokemonListJson
+            .map((item) => Pokemon.fromJson(item))
+            .toList();
+
+        if (mounted) {
+          final favoritesProvider =
+              Provider.of<FavoritesProvider>(context, listen: false);
+          favoritesProvider.updateFavorites(favoritePokemonList);
+          _updateFavoritesList();
+        }
+      }
+    } catch (e) {
+      Text('Error al cargar los Pokémon favoritos: $e');
+    }
+  }
+
+  void _updateFavoritesList() {
+    final favoritesProvider =
+        Provider.of<FavoritesProvider>(context, listen: false);
+
+    setState(() {
+      // loop to update the favorites from SharedPreferences
+      for (var pokemon in _pokemonList) {
+        pokemon.isFavorite = favoritesProvider.isFavorite(pokemon);
+      }
+      _filteredPokemonList = _pokemonList;
+    });
+  }
+
+  Future<void> _loadPokemonFromApi() async {
+    final List<Pokemon> pokemonList = await PokemonService.fetchPokemonList();
+    setState(() {
+      _pokemonList = pokemonList;
+      _filteredPokemonList = pokemonList;
+    });
+    _savePokemonList(pokemonList);
+  }
+
+  Future<void> _savePokemonList(List<Pokemon> pokemonList) async {
+    final prefs = await SharedPreferences.getInstance();
+    final pokemonListJson =
+        jsonEncode(pokemonList.map((e) => e.toJson()).toList());
+    await prefs.setString('pokemonList', pokemonListJson);
+  }
+
   void _filterPokemonList(String query) {
-    final filteredList = _pokemonList
-        .where((pokemon) =>
-            pokemon.name.toUpperCase().contains(query.toLowerCase()))
-        .toList();
+    final filteredList =
+        _pokemonList.where((pokemon) => pokemon.name.contains(query)).toList();
     setState(() {
       _filteredPokemonList = filteredList;
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Pokedex',
-          style: TextStyle(
-            color: AppColors.whiteText,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: AppColors.primaryColor,
         leading: IconButton(
           icon: const Icon(
             Icons.search,
@@ -76,6 +129,14 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           },
         ),
+        backgroundColor: AppColors.primaryColor,
+        title: const Text(
+          'Pokedex',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         actions: [
           IconButton(
             icon: const Icon(
@@ -86,8 +147,21 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const FavoritesScreen()),
-              );
+                  builder: (context) => const FavoritesScreen(),
+                ),
+              ).then((_) {
+                if (!mounted) return;
+                final favoritesProvider =
+                    Provider.of<FavoritesProvider>(context, listen: false);
+
+                setState(() {
+                  // loop to update the Pokémon list
+                  for (var pokemon in _pokemonList) {
+                    pokemon.isFavorite = favoritesProvider.isFavorite(pokemon);
+                  }
+                  _filteredPokemonList = _pokemonList;
+                });
+              });
             },
           ),
         ],
@@ -101,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 controller: _searchController,
                 autofocus: true,
                 decoration: const InputDecoration(
-                  hintText: 'Buscar...',
+                  hintText: 'Buscar..',
                   border: OutlineInputBorder(),
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -124,9 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemCount: _filteredPokemonList.length,
                     itemBuilder: (context, index) {
                       final pokemon = _filteredPokemonList[index];
-                      return PokemonCard(
-                        pokemon: pokemon, // Solo pasamos el Pokémon aquí
-                      );
+                      return PokemonCard(pokemon: pokemon);
                     },
                   ),
           ),
