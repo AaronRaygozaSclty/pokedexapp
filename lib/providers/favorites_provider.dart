@@ -27,6 +27,7 @@ class FavoritesProvider extends ChangeNotifier {
       Logs.p.e('Error loading favorite Pokémon: $e');
     }
   }
+  
 
   // Saves the favorite Pokémon list to SharedPreferences
   Future<void> _saveFavoritesToPrefs() async {
@@ -63,4 +64,8 @@ class FavoritesProvider extends ChangeNotifier {
     _favorites = newFavorites;
     notifyListeners(); // Notify listeners (screens using this provider)
   }
+
+  void loadFavoritesFromStorage(prefs) {}
 }
+
+

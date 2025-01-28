@@ -13,17 +13,10 @@ class FavoritesScreen extends StatefulWidget {
 }
 
 class FavoritesScreenState extends State<FavoritesScreen> {
-
   @override
   void initState() {
     super.initState();
-    _loadFavorites(); 
-  }
-
-  Future<void> _loadFavorites() async {
-    final favoritesProvider =
-        Provider.of<FavoritesProvider>(context, listen: false);
-    await favoritesProvider.loadFavoritesFromPrefs(); // 🐻
+    Provider.of<FavoritesProvider>(context, listen: false);
   }
 
   @override
